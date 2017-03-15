@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image uploader</title>
+    <link rel="stylesheet" href="./assets/css/lib.css">
+</head>
+<body>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .col {
+            display: inline-block;
+            max-width: 50%;
+            min-width: 360px;
+            margin-right: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        #root-container {
+            margin: 20px;
+            width: 100%;
+        }
+
+        .tree {
+            height: 400px;
+            overflow-y: scroll;
+        }
+    </style>
+
+    <div id="root-container">
+
+        <div class="col">
+            <label>Select image:</label>
+
+            <image-uploader
+                    v-model="selectedImage0"
+                    :src-prefix=""
+                    :show-info="false"
+                    :allow-clear="false"
+                    placeholder="Select image"
+                    id="logo0"
+                    v-on:image-changed="onLogoChange"
+            ></image-uploader>
+
+            <p>Selected image: {{ selectedImage0 }}</p>
+        </div>
+
+        <div class="col">
+            <label>Select image:</label>
+
+            <image-uploader
+                    v-model="selectedImage1"
+                    :src-prefix=""
+                    :show-info="true"
+                    :allow-clear="true"
+                    placeholder="Select image or clear"
+                    id="logo1"
+                    v-on:image-changed="onLogoChange"
+            ></image-uploader>
+
+            <p>Selected image: {{ selectedImage1 }}</p>
+        </div>
+
+
+
+    </div>
+
+    <!-- JS scripts -->
+    <script type="text/javascript" src="./assets/js/lib.js"></script>
+    <script type="text/javascript" src="./assets/js/app.js"></script>
+</body>
+</html>

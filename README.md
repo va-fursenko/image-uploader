@@ -1,2 +1,5 @@
 # image-uploader
-Picture preview and uploader Vue2 component
+
+Компонент VueJS2 для загрузки изображений с предпросмотром.
+
+Picture preview and uploader VueJS2 component
