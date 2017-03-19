@@ -21,5 +21,7 @@ Picture preview and uploader VueJS2 component with drag-n-drop.
 ```
 
 Флаг `allow-clear` позволяет сбрасывать выбранное изображение. 
+
 Флаг `show-info` - позволяет выводить краткую информацию о загруженном изображении (имя файла, расширение, размер). 
+
 Событие `image-changed` (`events.IMAGE_CHANGED`) вызывается с base64-зашифрованным содержимым загруженного файла.
