@@ -4,8 +4,6 @@ let elixir = require('laravel-elixir');
 
 require("laravel-elixir-webpack-official");
 require('laravel-elixir-vue');
-require('laravel-elixir-remove');
-
 elixir.config.sourcemaps = true;
 
 let
@@ -18,10 +16,6 @@ let
  * Run elixir
  */
 elixir(function(mix) {
-
-    // Clear assets path
-    //mix.remove(assetsPath);
-
     // Pack component
 
     // Pack component to js file

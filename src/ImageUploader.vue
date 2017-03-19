@@ -6,20 +6,20 @@
         </div>
 
         <div class="image-uploader__image-wrapper">
-            <i v-show="empty && !isLoading" class="fa fa-picture-o fa-3x"></i>
+            <i v-show="isEmpty && !isLoading" class="fa fa-picture-o fa-3x"></i>
             <i v-show="isLoading" class="fa fa-refresh fa-spin fa-3x"></i>
             <img
-                    v-show="!empty && !isLoading"
+                    v-show="!isEmpty && !isLoading"
                     class="image-uploader__image"
                     ref="img"
                     :src="src"
                     :class="{
-                           'with-info': showInfo && !empty,
-                        'without-info': !showInfo || empty
+                           'with-info': showInfo && !isEmpty,
+                        'without-info': !showInfo || isEmpty
                     }"
             >
 
-            <pre v-show="!empty && showInfo && !isLoading" class="image-uploader__image-info">{{ fileInfo }}</pre>
+            <pre v-show="!isEmpty && showInfo && !isLoading" class="image-uploader__image-info">{{ fileInfo }}</pre>
         </div>
 
         <div v-show="isDragging" ref="dragNDropScreenWrapper" class="image-loader__drag-n-drop-screen-wrapper">
@@ -29,7 +29,7 @@
             <div class="fa fa-picture-o image-loader__drag-n-drop-text" aria-hidden="true"></div>
         </div>
 
-        <i v-show="(!empty || isLoading) && allowClear" @click="clearValue()" class="fa fa-trash-o image-loader__clear-icon" title="Clear image"></i>
+        <i v-show="(!isEmpty || isLoading) && allowClear" @click="clearValue()" class="fa fa-trash-o image-loader__clear-icon" title="Clear image"></i>
     </div>
 </template>
 
@@ -75,14 +75,10 @@
         // Data store
         data () {
             return {
-                value: '',
-                // Inner properties
                 // New uploaded image's base64-encoded content
                 content: null,
                 // New image's File object
                 file: null,
-                // Src prefix for loading obtained image
-                srcPrefix: '',
                 isLoading: false,
                 isDragging: false
             }
@@ -90,19 +86,38 @@
 
         // Computed properties
         computed: {
-            // Picture src
+            /**
+             * Possible component's custom events
+             *
+             * @return {Object}
+             */
+            events () {
+                return {
+                    IMAGE_CHANGED: 'image-changed'
+                };
+            },
+
+            /**
+             * Picture src
+             * 
+             * @return {String}
+             */
             src () {
                 if (this.content) {
                     return this.content;
                 }
-                return this.empty
+                return this.isEmpty
                         ? ''
                         : this.srcPrefix + this.value;
             },
 
-            // Image info - file name, size, type
+            /** 
+             * Image info - file name, size, type
+             * 
+             * @return {String}
+             */
             fileInfo () {
-                if (this.empty) {
+                if (this.isEmpty) {
                     return '';
                 }
                 let result = this.value;
@@ -116,22 +131,34 @@
                 return result;
             },
 
-            // Get original picture width
+            /**
+             * Get original picture width
+             *
+             * @return {Number}
+             */
             width () {
                 return this.$refs.img
                         ? this.$refs.img.naturalWidth
                         : 0;
             },
 
-            // Get original picture height
+            /** 
+             * Get original picture height
+             *    
+             * @return {Number}
+             */
             height () {
                 return this.$refs.img
                         ? this.$refs.img.naturalHeight
                         : 0;
             },
 
-            // Empty value flag
-            empty () {
+            /** 
+             * Empty value flag
+             *
+             * @return {Boolean}
+             */
+            isEmpty () {
                 return !Boolean(this.value);
             }
         },
@@ -142,13 +169,11 @@
              * Clear value and all other data properties
              */
             clearValue () {
-                this.value = '';
-                this.content = null;
                 this.file = null;
                 this.isLoading = false;
                 this.isDragging = false;
                 // Dispatch input events with empty value and image content
-                this.dispatchInputEvents();
+                this.dispatchInputEvents('', null);
             },
 
             /**
@@ -197,12 +222,12 @@
              */
             onImageLoad (e) {
                 this.content = e.target.result;
-                this.value = this.file instanceof File
-                    ? this.file.name
-                    : '';
                 this.isLoading = false;
+                let filename = this.file instanceof File
+                    ? this.file.name
+                    : '';                
                 // Dispatch input events with new value and image content
-                this.dispatchInputEvents();
+                this.dispatchInputEvents(filename, this.content);
             },
 
             /**
@@ -267,11 +292,11 @@
             /**
              * Dispatches input events for value and content
              */
-            dispatchInputEvents() {
+            dispatchInputEvents(filename, content) {
                 // Dispatch new input event with new value
-                this.$emit('input', this.value);
+                this.$emit('input', filename);
                 // Dispatch new event for parent with new image content
-                this.$emit('image-changed', this.content);
+                this.$emit(this.events.IMAGE_CHANGED, content);
             }
         },
 
