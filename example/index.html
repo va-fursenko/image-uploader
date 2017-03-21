@@ -38,31 +38,15 @@
     <div id="root-container">
 
         <div class="col">
-            <label>Select image:</label>
-
-            <image-uploader
-                    v-model="selectedImage0"
-                    src-prefix=""
-                    :show-info="true"
-                    :allow-clear="true"
-                    placeholder="Select image or clear"
-                    id="image0"
-                    v-on:image-changed="onImageChange"
-            ></image-uploader>
-
-            <p>Selected image: {{ selectedImage0 }}</p>
-        </div>
-
-        <div class="col">
-            <label>Select image:</label>
+            <label>Select image or clear:</label>
 
             <image-uploader
                     v-model="selectedImage1"
-                    src-prefix="/assets/img/"
+                    src-prefix="/vue/image-uploader/assets/img/"
                     :show-info="false"
-                    :allow-clear="false"
-                    placeholder="Select image"
-                    id="image1"
+                    :allow-clear="true"
+                    placeholder="Select image or clear"
+                    id="logo"
                     v-on:image-changed="onImageChange"
             ></image-uploader>
 
